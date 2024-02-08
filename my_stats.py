@@ -9,7 +9,7 @@ from import_package import *
 
 def counting(looking_metacell,  looking_2x2compare, psm, spc):
     """
-        Function to count
+        Functions to count
             - the percentage  of imputation
             - the percentage of significatif
             - the number of protein and spectre in psm
@@ -61,7 +61,7 @@ def find_M(looking_metacell, quanti):
 
     # Find the value of M and P
 
-    # 1) Search the position (n° lign) of the first occurence of M & P for each column in looking_metacell
+    # 1) Search the position (n° lign) of the first occurrence of M & P for each column in looking_metacell
     search = ['M', 'P']
     position = looking_metacell.apply(lambda col: [col.eq(val).idxmax() for val in search])
     position.index = search
@@ -80,4 +80,28 @@ def find_M(looking_metacell, quanti):
 
     return imputation_value
 
+
+def my_pca(table_stats):
+    """
+        Make the PCA analysis on the XIC abundance
+    :param table_stats: table of XIC abundance + conditions
+    :return: table of th 5th first PCA and the scree values
+    """
+
+    x = table_stats.drop('Condition', axis=1)
+    x_standardized = StandardScaler().fit_transform(x)
+
+    pca = PCA()
+    x_pca = pca.fit_transform(x_standardized)
+
+    table_pca = table_stats['Condition']
+    for i in range(5):
+        table_pca[f'PCA{i + 1}'] = x_pca[:, i]
+
+    scree = pd.DataFrame({"Dimension": ["Dim" + str(i + 1) for i in range(len(pca.explained_variance_ratio_))],
+                          "% Explaine Variance": (pca.explained_variance_ratio_ * 100).round(1),
+                          "% Cumulative": (np.cumsum(pca.explained_variance_ratio_ * 100)).round(1)
+                          })
+
+    return table_pca, scree, pca
 

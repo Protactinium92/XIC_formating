@@ -10,7 +10,11 @@
     pip install
         - pandas
         - numpy
+        - scikit-learn as sklearn
         - openpyxl
+        - plotly
+        - matplotlib
+        - seaborn
 
 
     This part is the main script
@@ -116,6 +120,7 @@ looking_metacell = metacell_comp.filter(regex=f"^metacell", axis=1)  # metacell 
 percentage_imputation, percentage_signif2x2, summary_psm, summary_spc = st.counting(looking_metacell,
                                                                                     looking_2x2compare, psm, spc)
 imputation_value = st.counting(looking_metacell,  looking_2x2compare, psm, spc)
+table_pca, scree, pca = st.my_pca(table_stats)
 
 
 # ----------------------------------------------- DATA VISUALIZATION ---------------------------------------------------
