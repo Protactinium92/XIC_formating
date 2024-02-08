@@ -71,14 +71,14 @@ def input_file():
 # ---------------------------------------------------- INPUT -----------------------------------------------------------
 
 # Importation of the Prostar file SPC and the annotation file, they must be in the same directory
-# link_dir_input, excel_XIC, excel_SPC, excel_GO = input_file()
+link_dir_input, excel_XIC, excel_SPC, excel_GO = input_file()
 
 # in comment some lign for fast testing code
-link_dir_input = r'C:\Users\hpier\Documents\code\Python\StageM1\XIC_DDA'
-link_dir_input = link_dir_input.replace('\\', '/') + "/"
-excel_XIC = '2023_S43_VMontoya_E22_Hyp_Test.xlsx'
-excel_SPC = 'XIC_Proline_2023-S43_VMontoya_TIMS_export_jc_16012024_PPSE.xlsx'
-excel_GO = 'TAIR_NEW_All-Annotations_For-Data-Analyzer-Proline_12022018.xlsx'
+# link_dir_input = r'C:\Users\hpier\Documents\code\Python\StageM1\XIC_DDA'
+# link_dir_input = link_dir_input.replace('\\', '/') + "/"
+# excel_XIC = '2023_S43_VMontoya_E22_Hyp_Test.xlsx'
+# excel_SPC = 'XIC_Proline_2023-S43_VMontoya_TIMS_export_jc_16012024_PPSE.xlsx'
+# excel_GO = 'TAIR_NEW_All-Annotations_For-Data-Analyzer-Proline_12022018.xlsx'
 
 
 # Signification following the adjusted p-val and the Fold-Change
@@ -88,8 +88,8 @@ threshold_FC = float(input("Define the log2 Fold Change threshold in absolute va
 # -------------------------------------------------- OUTPUT ------------------------------------------------------------
 
 # name of the new file for export :
-# new_excel_file = input('Write the name of the results Excel file (without .xlsx): ')
-new_excel_file = 'Template Quanti XIC'
+new_excel_file = input('Write the name of the results Excel file (without .xlsx): ')
+# new_excel_file = 'Template Quanti XIC'
 
 # Complete name of the file with the path
 new_excel_file = os.path.join(link_dir_input, new_excel_file + ".xlsx")
