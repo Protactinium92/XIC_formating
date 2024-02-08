@@ -88,7 +88,9 @@ threshold_FC = float(input("Define the log2 Fold Change threshold in absolute va
 # -------------------------------------------------- OUTPUT ------------------------------------------------------------
 
 # name of the new file for export :
-new_excel_file = "Export_DDA-XIC_Format_bis"
+# new_excel_file = input('Write the name of the results Excel file (without .xlsx): ')
+new_excel_file = 'Template Quanti XIC'
+
 # Complete name of the file with the path
 new_excel_file = os.path.join(link_dir_input, new_excel_file + ".xlsx")
 
@@ -119,7 +121,7 @@ quanti.set_index("accession", inplace=True)
 looking_metacell = metacell_comp.filter(regex=f"^metacell", axis=1)  # metacell (beginning of the sentence)
 percentage_imputation, percentage_signif2x2, summary_psm, summary_spc = st.counting(looking_metacell,
                                                                                     looking_2x2compare, psm, spc)
-imputation_value = st.counting(looking_metacell,  looking_2x2compare, psm, spc)
+imputation_value = st.find_M(looking_metacell, quanti)
 table_pca, scree, pca = st.my_pca(table_stats)
 
 
@@ -133,9 +135,10 @@ viz.plot_PCA(table_pca, scree, save_dir, pca, table_stats)
 
 # ------------------------------- EXPORTATION IN NEW EXCEL FILE WITH DIFFERENT SHEET -----------------------------------
 
-output(new_excel_file, looking_metacell, full_table, percentage_imputation, imputation_value, summary_psm,
+output(new_excel_file, full_table, percentage_imputation, imputation_value, summary_psm,
        summary_spc, percentage_signif2x2, threshold_FC, threshold_pvalue)
 styling(new_excel_file, looking_metacell, full_table)
+
 
 # Writing to txt file (Beatrice export)
 export_beatrice.to_csv(rf"{save_dir}\export_beatrice.txt", sep="\t", index=False)

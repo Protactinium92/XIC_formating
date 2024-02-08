@@ -94,7 +94,7 @@ def my_pca(table_stats):
     pca = PCA()
     x_pca = pca.fit_transform(x_standardized)
 
-    table_pca = table_stats['Condition']
+    table_pca = pd.DataFrame(table_stats['Condition'])
     for i in range(5):
         table_pca[f'PCA{i + 1}'] = x_pca[:, i]
 
