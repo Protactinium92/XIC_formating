@@ -12,3 +12,4 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import plotly.express as px
+import plotly.graph_objs as go

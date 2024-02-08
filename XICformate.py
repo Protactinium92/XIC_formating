@@ -89,6 +89,8 @@ threshold_FC = float(input("Define the log2 Fold Change threshold in absolute va
 
 # name of the new file for export :
 new_excel_file = "Export_DDA-XIC_Format_bis"
+# Complete name of the file with the path
+new_excel_file = os.path.join(link_dir_input, new_excel_file + ".xlsx")
 
 # Saving directory
 save_dir = link_dir_input + "export"
@@ -97,8 +99,6 @@ save_dir = link_dir_input + "export"
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-# Complete name of the file with the path
-new_excel_file = os.path.join(save_dir, new_excel_file + ".xlsx")
 
 # ------------------------------------------------ EXCEL FILE IMPORT ---------------------------------------------------
 
@@ -125,7 +125,13 @@ table_pca, scree, pca = st.my_pca(table_stats)
 
 # ----------------------------------------------- DATA VISUALIZATION ---------------------------------------------------
 
+plt.ioff()  # doesn't show the graphics interface
+viz.fullheatmap(quanti, save_dir)
 viz.volcano_plt(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, save_dir)
+viz.scree_plot(scree, save_dir)
+viz.plot_PCA(table_pca, scree, save_dir, pca, table_stats)
+
+# ------------------------------- EXPORTATION IN NEW EXCEL FILE WITH DIFFERENT SHEET -----------------------------------
 
 output(new_excel_file, looking_metacell, full_table, percentage_imputation, imputation_value, summary_psm,
        summary_spc, percentage_signif2x2, threshold_FC, threshold_pvalue)
