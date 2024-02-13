@@ -36,17 +36,17 @@ def keep_only_col(name_col, dataframe, compare=False):
 def scientific(value):
 
     """
-        Transform the vailue into the scientific format for all value under 0.05
+        Transform the value into the scientific format for all value strictly under 0.05 rounding at 2 numbers for
+        the decimal
         The value will be transform in str
+        If the value is more or equal of 0.05, round at 2 numbers for the decimal
     :param value: Value to be transform
     :return: return the value itself
     """
 
     if isinstance(value, float):
         if abs(value) < 0.05:
-            value = np.format_float_scientific(value, precision=2, exp_digits=1)
-        else:
-            value = round(value, 2)  # still a float
+            value = np.format_float_scientific(value, exp_digits=1)
     return value
 
 
@@ -82,7 +82,8 @@ def manipulation(feature, prot_set):
 
     return metacell_comp, psm, begining, spc, looking_adjpv
 
-def quanti_meta_transform (quanti, meta):
+
+def quanti_meta_transform(quanti, meta):
 
     """
         Transpose the quanti dataframe, et del the replicat column of the meta dataframe
@@ -105,6 +106,7 @@ def quanti_meta_transform (quanti, meta):
         meta.rename(columns={meta.columns[0]: 'Sample'}, inplace=True)
 
     return trans_quanti, meta
+
 
 def merging(begining, quanti, psm, go_set, metacell_comp, meta, trans_quanti):
     """
@@ -152,8 +154,8 @@ def comparison2x2_and_exp_bea(metacell_comp, looking_adjpv, threshold_FC, thresh
     ordering_col = ["accession", "description"]
     ordering_col_nolog10 = ["accession", "description"]
     for col in looking_FC:
-        ordering_col.append(col)
-        ordering_col.append(list_adjpv.pop(0))
+        ordering_col.append(col)  # add the col in the list
+        ordering_col.append(list_adjpv.pop(0))  # add the 1st col of the log10 adjusted pval then remove it
         ordering_col_nolog10.append(col)
         ordering_col_nolog10.append(nolog10_list.pop(0))
 
@@ -165,7 +167,6 @@ def comparison2x2_and_exp_bea(metacell_comp, looking_adjpv, threshold_FC, thresh
     export_beatrice = pd.merge(export_beatrice, adjpval_nolog10, left_index=True, right_index=True)
     export_beatrice = export_beatrice.reindex(columns=ordering_col_nolog10)
     export_beatrice.rename(columns=lambda x: x.replace("(", "").replace(")", "").replace("_", " "), inplace=True)
-
 
     # Add column for signficatifs values
     df_signif = pd.DataFrame()

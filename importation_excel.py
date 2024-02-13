@@ -13,7 +13,7 @@ def import_excel(link_dir, file, sheet_number):
     :param link_dir: link of the input directory
     :param file: name of the Excel file with the extension
     :param sheet_number: Desired sheet
-    :return: pandas table
+    :return: pandas dataframe
     """
     directory = link_dir
     excel_file = file

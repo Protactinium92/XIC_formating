@@ -16,7 +16,7 @@ def fullheatmap(quanti, save_dir):
 
     # Add a title to the graph
     heatmap_all.fig.suptitle("Heatmap of all proteins", fontsize=20, y=1.05)
-    heatmap_all.savefig(f"{save_dir}/heatmap_all.png", bbox_inches='tight')
+    heatmap_all.savefig(f"{save_dir}/heatmap_all.svg", bbox_inches='tight')
     plt.clf()  # Clear the current figure to start a new one
 
 
@@ -65,8 +65,8 @@ def volcano_plot(dataframe, logfc, adjpva, color_group, threshold_pval, threshol
     fig.write_html(html_file)
 
 
-def volcano_plt(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, save_dir):
-    # Volcano plot
+def volcanos(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, save_dir):
+    # Volcano plot for all comparisons
     for col in looking_FC:
         corresponding_pval = looking_2x2compare.columns.get_loc(col) + 1
         corresponding_pval = looking_2x2compare.columns[corresponding_pval]

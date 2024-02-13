@@ -62,7 +62,7 @@ def find_M(looking_metacell, quanti):
     # Find the value of M and P
 
     # 1) Search the position (n° lign) of the first occurrence of M & P for each column in looking_metacell
-    search = ['M', 'P']
+    search = ['M']  # search = ['M', 'P'] (1st request)
     position = looking_metacell.apply(lambda col: [col.eq(val).idxmax() for val in search])
     position.index = search
 
@@ -74,7 +74,7 @@ def find_M(looking_metacell, quanti):
         for i in range(len(position)):
             value_lign = position.iat[i, indice_col]  # n° lign found
             imputation_value.iat[i, indice_col] = quanti.iat[value_lign, indice_col]
-    imputation_value.drop("P", inplace=True)
+    #imputation_value.drop("P", inplace=True)
     imputation_value.reset_index(inplace=True)
     imputation_value["index"].replace({"M": "Missing Entire Condition"}, inplace=True)
 
