@@ -34,7 +34,7 @@ try:
     from importation_excel import transform_into_df
     import dataframe_manipulation as manip
     import my_stats as st
-    import vizualization as viz
+    import visualization as viz
     from output_excel import output, styling
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -154,4 +154,4 @@ try:
 
 except Exception as e:
     print("ERROR:", e)
-    input("Press enter to close the windows")
+    input("Press enter to close the window")
