@@ -66,6 +66,7 @@ def volcano_plot(dataframe, logfc, adjpva, color_group, threshold_pval, threshol
 
 def volcanos(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, save_dir):
     # Volcano plot for all comparisons
+    print("Creation oof volcano plot")
     for col in looking_FC:  # col correspond to the log FC column to plot
         corresponding_pval = looking_2x2compare.columns.get_loc(col) + 1  # search the n° of the adjusted p-val column
         corresponding_pval = looking_2x2compare.columns[corresponding_pval]  # define the corect column of adjusted pval to plot in the graph
@@ -75,7 +76,7 @@ def volcanos(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, sav
                      threshold_pval=threshold_pvalue, threshold_fc=threshold_FC,
                      directory=save_dir)
         print(f"Volcano plot {looking_FC.columns.get_loc(col) + 1}/{len(looking_FC.columns)}")
-
+        progress_bar(looking_FC.columns.get_loc(col) + 1, len(looking_FC.columns), "Volcano plot")
 
 def scree_plot(scree, save_dir):
 
@@ -168,7 +169,7 @@ def plot_PCA(table_pca, scree, save_dir, pca, table_stats):
                                index=table_stats.columns)
 
     loadings_df.reset_index(inplace=True)
-
+    print("Creation of Loading plot")
     for i in range(5):
         # plotly graph object
         trace = go.Bar(
@@ -186,5 +187,5 @@ def plot_PCA(table_pca, scree, save_dir, pca, table_stats):
         # plot the figure
         fig = go.Figure(data=[trace], layout=layout)
         fig.write_html(f"{save_dir}/PCA_loading{i+1}.html")
-        print(f"Plot loading PC{i + 1}/5 done")
+        progress_bar(i+1, 5, "Creation of Loading plot")
 

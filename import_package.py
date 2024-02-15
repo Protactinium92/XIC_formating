@@ -7,6 +7,7 @@ def progress_bar(progress, total, task='task'):
         green when it's completed
     :param progress: current number
     :param total: representing the total number of tasks to be completed
+    :param task: Name of the task
     :return: the progress bar in the console
     """
     percent = 100 * (progress/float(total))

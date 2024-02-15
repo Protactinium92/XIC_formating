@@ -87,12 +87,13 @@ def styling(new_excel_file, looking_metacell, full_table):
 
     # Reduce size of the metacell columns
     print("Formatting metacell columns size")
-    i = 1
+    count = 0
+    progress_bar(count, looking_metacell.shape[1])
     for col in looking_metacell:
         index_col = full_table.columns.get_loc(col) + 1
         sheet.column_dimensions[openpyxl.utils.get_column_letter(index_col)].width = 3
-        print(f"{i}/{looking_metacell.shape[1]}")
-        i += 1
+        count += 1
+        progress_bar(count, looking_metacell.shape[1], "Formatting metacell columns size")
 
     # increase the width of the A1 cell on Statistics sheet
     sheet_stats = workbook["Statistics"]
