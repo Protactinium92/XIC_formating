@@ -17,6 +17,7 @@ def fullheatmap(quanti, save_dir):
     # Add a title to the graph
     heatmap_all.fig.suptitle("Heatmap of all proteins", fontsize=20, y=1.05)
     heatmap_all.savefig(f"{save_dir}/heatmap_all.svg", bbox_inches='tight')
+    heatmap_all.savefig(f"{save_dir}/heatmap_all.png", bbox_inches='tight')
     plt.clf()  # Clear the current figure to start a new one
 
 
@@ -75,7 +76,6 @@ def volcanos(looking_FC, looking_2x2compare, threshold_pvalue, threshold_FC, sav
         volcano_plot(dataframe=looking_2x2compare,logfc=col, adjpva=corresponding_pval, color_group=group,
                      threshold_pval=threshold_pvalue, threshold_fc=threshold_FC,
                      directory=save_dir)
-        print(f"Volcano plot {looking_FC.columns.get_loc(col) + 1}/{len(looking_FC.columns)}")
         progress_bar(looking_FC.columns.get_loc(col) + 1, len(looking_FC.columns), "Volcano plot")
 
 def scree_plot(scree, save_dir):

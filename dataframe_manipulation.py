@@ -6,7 +6,9 @@
 
 from import_package import *
 
-def keep_only_col(name_col, dataframe, compare=False):
+pd.set_option('display.precision', 2)
+
+def keep_only_col(name_col, dataframe, compare=False, id=False):
     """
         Function to format the table to keep only desired column which start by a specific name
         Then replace empty cells by 0
@@ -29,7 +31,11 @@ def keep_only_col(name_col, dataframe, compare=False):
         pos_first_cond_col = dataframe.columns.get_loc(keep_col[-1])
         keep_col = keep_col + dataframe.columns.tolist()[pos_first_cond_col + 1:]
 
-    keep_col = ['accession', 'description', 'samesets_accessions', 'subsets_accessions'] + keep_col
+    if id is True:
+        keep_col = ['ID', 'accession', 'description', 'samesets_accessions', 'subsets_accessions'] + keep_col
+    else:
+        keep_col = ['accession', 'description'] + keep_col
+
     return dataframe[keep_col].fillna(0)
 
 
@@ -54,7 +60,7 @@ def manipulation(feature, prot_set):
     # Keep only interested columns
     metacell_comp = keep_only_col('metacell', feature, True)
     psm = keep_only_col('psm', dataframe=feature)
-    begining = keep_only_col(name_col=None, dataframe=feature)  # To order the table and have only the description...
+    begining = keep_only_col(name_col=None, dataframe=feature, id=True)  # To order the table and have only the description...
     if prot_set is not None:
         spc = keep_only_col('psm_count', prot_set)
     else:

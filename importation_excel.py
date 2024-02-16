@@ -15,10 +15,11 @@ def import_excel(link_dir, file, sheet_number):
     :param sheet_number: Desired sheet
     :return: pandas dataframe
     """
+    print(f'Importation of the Excel {file} file, sheet {sheet_number} on going')
     directory = link_dir
     excel_file = file
     sheet_list = pd.ExcelFile(directory + excel_file).sheet_names
-    print(f'Import of the Excel {file} file, sheet {sheet_list[sheet_number]}')
+    print(f'Import of the Excel {file} file, sheet {sheet_list[sheet_number]} complete')
     return pd.read_excel(directory + excel_file, sheet_name=sheet_list[sheet_number])
 
 def transform_into_df (link_dir_input, excel_XIC, excel_GO, excel_SPC):

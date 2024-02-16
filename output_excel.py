@@ -30,6 +30,7 @@ def add_table(file, sheets, dataframe, table_name, lig=3, col=1, stcol=0):
     :param stcol: start column of the table
     """
 
+    print(f'Addition of {table_name} in {sheets} on going')
     try:
         wb = openpyxl.load_workbook(file)
     except FileNotFoundError:
@@ -45,10 +46,10 @@ def add_table(file, sheets, dataframe, table_name, lig=3, col=1, stcol=0):
     with pd.ExcelWriter(file, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
         dataframe.to_excel(writer, sheet_name=sheets, startrow=lig, startcol=stcol, header=True, index=False)
 
-    # Add a header above the table
-    feuille = wb[sheets]
-    feuille.cell(row=lig, column=col).value = table_name
-    print(f'Add {table_name} in {sheets}')
+        # Add a header above the table
+        worksheet = writer.sheets[sheets]
+        worksheet.cell(row=lig, column=col).value = table_name
+    print(f'Addition of {table_name} in {sheets} complete')
 
 
 def output(new_excel_file, full_table, percentage_imputation, imputation_value, summary_psm,
@@ -59,7 +60,7 @@ def output(new_excel_file, full_table, percentage_imputation, imputation_value, 
     add_table(new_excel_file, "Statistics", percentage_imputation, table_name="Percentage of imputation")
     add_table(new_excel_file, "Statistics", imputation_value,
               lig=len(percentage_imputation) + 6,
-              table_name="Imputed value for the MEC and the POV")
+              table_name="Imputed value for the MEC")
     add_table(new_excel_file, "Statistics", summary_psm,
               lig=len(percentage_imputation) + len(imputation_value) + 9,
               table_name="PROSTAR Spectral Count (FDR < 1%)")
@@ -76,7 +77,7 @@ def output(new_excel_file, full_table, percentage_imputation, imputation_value, 
         add_table(new_excel_file, "Statistics", percentage_signif2x2,
                   lig=len(percentage_imputation) + len(imputation_value) + len(summary_psm) + 12,
                   table_name=(
-                      f"Percentage of Significant, comparison 2 by 2: log10 adjusted p-value threshold: {threshold_pvalue}, "
+                      f"Percentage of significant protein, comparison 2 by 2: log10 adjusted p-value threshold: {threshold_pvalue}, "
                       f"log2 FC threshold: {threshold_FC}"))
 
 
