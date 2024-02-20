@@ -13,6 +13,8 @@ def fullheatmap(quanti, save_dir):
     heatmap_all = sns.clustermap(quanti, method='average', metric='euclidean',
                                  cbar_kws={"label": "Normalized Abundance", "orientation": "horizontal"},
                                  cbar_pos=(0.75, 0.90, 0.1, 0.05))
+    x_labels = [label.get_text().replace('abundance_', '').replace('D__Data_', '') for label in heatmap_all.ax_heatmap.get_xticklabels()]
+    heatmap_all.ax_heatmap.set_xticklabels(x_labels, rotation=90)
 
     # Add a title to the graph
     heatmap_all.fig.suptitle("Heatmap of all proteins", fontsize=20, y=1.05)
@@ -82,8 +84,6 @@ def scree_plot(scree, save_dir):
 
     # 1 ) Scree plots
     scree.plot.bar(x="Dimension", y="% Explaine Variance")
-    plt.text(5, 18, "5%")  #
-    plt.axhline(y=5, linewidth=0.5, color="dimgray", linestyle="--")
     plt.savefig(f"{save_dir}/scree_polt_ExplainVar.svg")
     plt.clf()  # Clear the current figure to start a new one
     print("Plot Explain variance done")
@@ -148,10 +148,11 @@ def plot_PCA(table_pca, scree, save_dir, pca, table_stats):
 
     # 3D
 
+    total_3 = np.sum(pca.explained_variance_ratio_[:3]*100).round(1)
     fig = px.scatter_3d(
         table_pca, x='PCA1', y='PCA2', z='PCA3',
         color=table_pca['Condition'],
-        title=f'Total Explained Variance: {total_5}%',
+        title=f'Total Explained Variance: {total_3}%',
         labels=label,
         hover_name=table_pca.index.str.replace("_", " ").str.replace("abundance", ""))
     fig.write_html(f"{save_dir}/PCA_3D.html")

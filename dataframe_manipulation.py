@@ -6,7 +6,6 @@
 
 from import_package import *
 
-pd.set_option('display.precision', 2)
 
 def keep_only_col(name_col, dataframe, compare=False, id=False):
     """
@@ -19,9 +18,21 @@ def keep_only_col(name_col, dataframe, compare=False, id=False):
     :param compare If True take the last columns which have no recurrent names, by default is false to skip it
     :return: New dataframe with the selected column and empty cell replace by 0
     """
-    # test is the name is not empty
+
+    # check the table is in DIA analysis with specific name
+    dia = False
+    if 'First_Protein_Description' in dataframe.columns:
+        # Rename the column
+        dataframe = dataframe.rename(columns={'Protein_Group': 'accession'})
+        dataframe = dataframe.rename(columns={'First_Protein_Description': 'description'})
+        dia = True
+
+    dataframe['accession'] = dataframe['accession'].astype(str)
+    dataframe['description'] = dataframe['description'].astype(str)
+
+    # test if the name is not empty
     if name_col:
-        keep_col = [col for col in dataframe.columns if col.startswith(name_col)]
+        keep_col = dataframe.filter(regex=f"^{name_col}", axis=1).columns.to_list()
     else:
         keep_col = []
 
@@ -32,7 +43,10 @@ def keep_only_col(name_col, dataframe, compare=False, id=False):
         keep_col = keep_col + dataframe.columns.tolist()[pos_first_cond_col + 1:]
 
     if id is True:
-        keep_col = ['ID', 'accession', 'description', 'samesets_accessions', 'subsets_accessions'] + keep_col
+        if dia is True:
+            keep_col = ['ID', 'accession', 'description', 'Protein_Ids','Protein_Names', 'Genes']
+        else:
+            keep_col = ['ID', 'accession', 'description', 'samesets_accessions', 'subsets_accessions'] + keep_col
     else:
         keep_col = ['accession', 'description'] + keep_col
 
@@ -59,7 +73,7 @@ def scientific(value):
 def manipulation(feature, prot_set):
     # Keep only interested columns
     metacell_comp = keep_only_col('metacell', feature, True)
-    psm = keep_only_col('psm', dataframe=feature)
+    psm = keep_only_col('D__Data|psm', dataframe=feature)
     begining = keep_only_col(name_col=None, dataframe=feature, id=True)  # To order the table and have only the description...
     if prot_set is not None:
         spc = keep_only_col('psm_count', prot_set)
@@ -67,9 +81,10 @@ def manipulation(feature, prot_set):
         spc = None
 
     # Simplification of the value on the df metacell
-    for col in metacell_comp.columns[4:]:
+    for col in metacell_comp.columns:
         metacell_comp[col] = metacell_comp[col].replace(
             {'Quant. by direct id': 'D',
+             'Quantified': 'Q',
              'Quant. by recovery': 'R',
              'Imputed MEC': 'M',
              'Imputed POV': 'P'})
@@ -128,8 +143,8 @@ def merging(begining, quanti, psm, go_set, metacell_comp, meta, trans_quanti):
     :return:
     """
     # Merge all tab in one
-    full_table = pd.merge(begining, quanti.round(2))
-    full_table = pd.merge(full_table, psm)
+    full_table = pd.merge(begining, quanti.round(2), on='ID')
+    full_table = pd.merge(full_table, psm, on=('accession', 'description'))
     full_table = pd.merge(full_table, metacell_comp)
     if go_set is not None:
         full_table = pd.merge(full_table, go_set, how='left')

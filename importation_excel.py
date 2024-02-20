@@ -48,8 +48,8 @@ def transform_into_df (link_dir_input, excel_XIC, excel_GO, excel_SPC):
 
     # Dataframe import
     quanti = import_excel(link_dir_input, excel_XIC, sheet_quanti)
-    if quanti.columns[0] != 'accession':
-        quanti.rename(columns={quanti.columns[0]: 'accession'}, inplace=True)
+    if quanti.columns[0] != 'ID':
+        quanti.rename(columns={quanti.columns[0]: 'ID'}, inplace=True)
     meta = import_excel(link_dir_input, excel_XIC, sheet_meta)
     feature = import_excel(link_dir_input, excel_XIC, sheet_feature)
 
@@ -58,8 +58,8 @@ def transform_into_df (link_dir_input, excel_XIC, excel_GO, excel_SPC):
     if excel_GO != ".xlsx":
         go_set = import_excel(link_dir_input, excel_GO, sheet_go)
         go_set.columns = [col.lower() for col in go_set.columns]  # lower case the name of each column
-        if go_set.columns[0] != 'accession':
-            go_set.rename(columns={go_set.columns[0]: 'accession'}, inplace=True)
+        if go_set.columns[0] != 'ID':
+            go_set.rename(columns={go_set.columns[0]: 'ID'}, inplace=True)
     else:
         go_set = None
     if excel_SPC != ".xlsx":

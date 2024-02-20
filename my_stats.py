@@ -7,7 +7,7 @@
 from import_package import *
 
 
-def counting(looking_metacell,  looking_2x2compare, psm, spc):
+def counting(looking_metacell, looking_2x2compare, psm, spc):
     """
         Functions to count
             - the percentage  of imputation
@@ -22,18 +22,21 @@ def counting(looking_metacell,  looking_2x2compare, psm, spc):
     percentage_imputation = looking_metacell.apply(lambda col: col.value_counts() / len(col) * 100).round(0)
     percentage_imputation.reset_index(inplace=True)
     percentage_imputation["index"].replace({"D": "Direct Identification",
-                                   "M": "Missing Entire Condition",
-                                   "P": "Partially Observed Values",
-                                   "R": "Recovery Cross Assignment"}, inplace=True)
+                                            "M": "Missing Entire Condition",
+                                            "P": "Partially Observed Values",
+                                            "R": "Recovery Cross Assignment",
+                                            "Q": "Quantified"}, inplace=True)
 
     # Count the number of Significant 2 by 2
     looking_signif = looking_2x2compare.filter(regex=f"Significant$", axis=1)
     percentage_signif2x2 = looking_signif.apply(lambda col: col.value_counts() / len(col) * 100).round(0)
+    percentage_signif2x2.index.name = "Signif"
     percentage_signif2x2.drop("No", inplace=True)
     percentage_signif2x2.reset_index(inplace=True)
 
     # Count the number of protein in psm (spectral count after the normalization)
-    looking_psm = psm.filter(regex=f"psm_count", axis=1)
+    pattern = "psm_count|D__Data"
+    looking_psm = psm.filter(regex=pattern, axis=1)
     nbr_prot = looking_psm.apply(lambda col: np.count_nonzero(col))  # number of cell different to 0
     nbr_spectre = looking_psm.sum().astype(int)
     # Summarize this information in one table
@@ -58,7 +61,6 @@ def counting(looking_metacell,  looking_2x2compare, psm, spc):
 
 
 def find_M(looking_metacell, quanti):
-
     # Find the value of M and P
 
     # 1) Search the position (n° lign) of the first occurrence of M & P for each column in looking_metacell
@@ -74,7 +76,7 @@ def find_M(looking_metacell, quanti):
         for i in range(len(position)):
             value_lign = position.iat[i, indice_col]  # n° lign found
             imputation_value.iat[i, indice_col] = quanti.iat[value_lign, indice_col]
-    #imputation_value.drop("P", inplace=True)
+    # imputation_value.drop("P", inplace=True)
     imputation_value.reset_index(inplace=True)
     imputation_value["index"].replace({"M": "Missing Entire Condition"}, inplace=True)
 
@@ -104,4 +106,3 @@ def my_pca(table_stats):
                           })
 
     return table_pca, scree, pca
-

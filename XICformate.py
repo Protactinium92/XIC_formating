@@ -117,7 +117,7 @@ try:
 
     # -------------------------------------------------- STATISTICS ----------------------------------------------------
 
-    quanti.set_index("accession", inplace=True)
+    quanti.set_index("ID", inplace=True)
     looking_metacell = metacell_comp.filter(regex=f"^metacell", axis=1)  # metacell (beginning of the sentence)
     percentage_imputation, percentage_signif2x2, summary_psm, summary_spc = st.counting(looking_metacell,
                                                                                         looking_2x2compare, psm, spc)
