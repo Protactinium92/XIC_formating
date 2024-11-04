@@ -88,6 +88,7 @@ def scree_plot(scree, save_dir):
     plt.clf()  # Clear the current figure to start a new one
     print("Plot Explain variance done")
 
+    # 2 ) Cumulatve plot
     scree.plot.bar(x="Dimension", y="% Cumulative")
     plt.text(0.5, 90, "95%")
     plt.axhline(y=95, linewidth=0.5, color="dimgray", linestyle="--")

@@ -89,7 +89,7 @@ try:
 
     # name of the new file for export :
     new_excel_file = input('Write the name of the results Excel file (without .xlsx): ')
-    #new_excel_file = 'Template Quanti XIC'
+    # new_excel_file = 'Template Quanti XIC'
 
     # Complete name of the file with the path
     new_excel_file = os.path.join(link_dir_input, new_excel_file + ".xlsx")

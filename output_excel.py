@@ -38,11 +38,11 @@ def add_table(file, sheets, dataframe, table_name, lig=3, col=1, stcol=0):
         wb.save(file)
         wb = openpyxl.load_workbook(file)
 
-    # Vérifier si la feuille existe, sinon la créer
+    # Check if the sheet exist, create it if not
     if not sheet_exists(wb, sheets):
         wb.create_sheet(sheets)
 
-    # Ajouter la table dans le fichier Excel
+    # Add table inf the Excel File
     with pd.ExcelWriter(file, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
         dataframe.to_excel(writer, sheet_name=sheets, startrow=lig, startcol=stcol, header=True, index=False)
 
