@@ -112,7 +112,7 @@ try:
     metacell_comp, psm, begining, spc, looking_adjpv = manip.manipulation(feature, prot_set)
     trans_quanti, meta = manip.quanti_meta_transform(quanti, meta)
     full_table, table_stats = manip.merging(begining, quanti, psm, go_set, metacell_comp, meta, trans_quanti)
-    looking_FC, looking_2x2compare, export_beatrice = manip.comparison2x2_and_exp_bea(metacell_comp, looking_adjpv,
+    looking_FC, looking_2x2compare = manip.comparison2x2(metacell_comp, looking_adjpv,
                                                                                       threshold_FC, threshold_pvalue)
 
     # -------------------------------------------------- STATISTICS ----------------------------------------------------
@@ -138,11 +138,6 @@ try:
     output(new_excel_file, full_table, percentage_imputation, imputation_value, summary_psm,
            summary_spc, percentage_signif2x2, threshold_FC, threshold_pvalue)
     styling(new_excel_file, looking_metacell, full_table)
-
-
-    # Writing to txt file (Beatrice export)
-    export_beatrice.to_csv(rf"{save_dir}\export_beatrice.txt", sep="\t", index=False)
-    print("The new text file: ", save_dir.replace('/', '\\'), r" \export_beatrice.txt has been created successfully")
 
     # ---------------------------------------------- END OF THE SCRIPT -------------------------------------------------
 

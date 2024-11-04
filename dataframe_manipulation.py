@@ -155,7 +155,7 @@ def merging(begining, quanti, psm, go_set, metacell_comp, meta, trans_quanti):
     return full_table, table_stats
 
 
-def comparison2x2_and_exp_bea(metacell_comp, looking_adjpv, threshold_FC, threshold_pvalue):
+def comparison2x2(metacell_comp, looking_adjpv, threshold_FC, threshold_pvalue):
 
     # Simplified dataframe comparison + table for the beatrice export
 
@@ -184,10 +184,6 @@ def comparison2x2_and_exp_bea(metacell_comp, looking_adjpv, threshold_FC, thresh
     looking_2x2compare = pd.merge(looking_2x2compare, looking_FC, left_index=True, right_index=True)
     looking_2x2compare = pd.merge(looking_2x2compare, looking_adjpv, left_index=True, right_index=True)
     looking_2x2compare = looking_2x2compare.reindex(columns=ordering_col)
-    export_beatrice = pd.merge(export_beatrice, looking_FC, left_index=True, right_index=True)
-    export_beatrice = pd.merge(export_beatrice, adjpval_nolog10, left_index=True, right_index=True)
-    export_beatrice = export_beatrice.reindex(columns=ordering_col_nolog10)
-    export_beatrice.rename(columns=lambda x: x.replace("(", "").replace(")", "").replace("_", " "), inplace=True)
 
     # Add column for signficatifs values
     df_signif = pd.DataFrame()
@@ -202,4 +198,4 @@ def comparison2x2_and_exp_bea(metacell_comp, looking_adjpv, threshold_FC, thresh
         col_signif = df_signif[f"{col}_Significant"]
         looking_2x2compare.insert(looking_2x2compare.columns.get_loc(col) + 2, f"{col}_Significant", col_signif)
 
-    return looking_FC, looking_2x2compare, export_beatrice
+    return looking_FC, looking_2x2compare
