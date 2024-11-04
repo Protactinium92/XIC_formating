@@ -68,28 +68,21 @@ try:
     #                                                       MAIN
     # ------------------------------------------------------------------------------------------------------------------
 
+
     # ---------------------------------------------------- INPUT -------------------------------------------------------
 
     # Importation of the Prostar file SPC and the annotation file, they must be in the same directory
     link_dir_input, excel_XIC, excel_SPC, excel_GO = input_file()
 
-    # in comment some lign for fast testing code
-    # link_dir_input = r'C:\Users\hpier\Documents\code\Python\StageM1\XIC_DDA'
-    # link_dir_input = link_dir_input.replace('\\', '/') + "/"
-    # excel_XIC = '2023_S43_VMontoya_E22_Hyp_Test.xlsx'
-    # excel_SPC = 'XIC_Proline_2023-S43_VMontoya_TIMS_export_jc_16012024_PPSE.xlsx'
-    # excel_GO = 'TAIR_NEW_All-Annotations_For-Data-Analyzer-Proline_12022018.xlsx'
-
-
     # Signification following the adjusted p-val and the Fold-Change
     threshold_pvalue = float(input("Define the log10 adjusted p-value threshold: "))
     threshold_FC = float(input("Define the log2 Fold Change threshold in absolute value: "))
+
 
     # -------------------------------------------------- OUTPUT --------------------------------------------------------
 
     # name of the new file for export :
     new_excel_file = input('Write the name of the results Excel file (without .xlsx): ')
-    # new_excel_file = 'Template Quanti XIC'
 
     # Complete name of the file with the path
     new_excel_file = os.path.join(link_dir_input, new_excel_file + ".xlsx")
@@ -115,6 +108,7 @@ try:
     looking_FC, looking_2x2compare = manip.comparison2x2(metacell_comp, looking_adjpv,
                                                                                       threshold_FC, threshold_pvalue)
 
+
     # -------------------------------------------------- STATISTICS ----------------------------------------------------
 
     quanti.set_index("ID", inplace=True)
@@ -133,11 +127,13 @@ try:
     viz.scree_plot(scree, save_dir)
     viz.plot_PCA(table_pca, scree, save_dir, pca, table_stats)
 
+
     # ------------------------------- EXPORTATION IN NEW EXCEL FILE WITH DIFFERENT SHEET -------------------------------
 
     output(new_excel_file, full_table, percentage_imputation, imputation_value, summary_psm,
            summary_spc, percentage_signif2x2, threshold_FC, threshold_pvalue)
     styling(new_excel_file, looking_metacell, full_table)
+
 
     # ---------------------------------------------- END OF THE SCRIPT -------------------------------------------------
 
