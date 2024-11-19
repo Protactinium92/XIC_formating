@@ -29,6 +29,8 @@ Additionally, the program can reprocess Proline repport and GO annotation for su
 
 The Excel template used by the program is also provided.
 
+*NOTE: At the moment, I do not have authorization to publish examples of the export
+
 A protocol, *240209-XICFormat_README*, has been published. It was written for non-Python users and serves as a user guide.
 This guide includes instructions for installing and using the program, along with a detailed explanation of the code including the package versions used.
 
