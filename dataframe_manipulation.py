@@ -143,7 +143,7 @@ def merging(begining, quanti, psm, go_set, metacell_comp, meta, trans_quanti):
     :return:
     """
     # Merge all tab in one
-    full_table = pd.merge(begining, quanti.round(2), on='ID')
+    full_table = pd.merge(begining, quanti, on='ID')
     full_table = pd.merge(full_table, psm, on=('accession', 'description'))
     full_table = pd.merge(full_table, metacell_comp)
     if go_set is not None:
